@@ -9,7 +9,7 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     public $name = 'Ndoro';
-   
+    public $search = "";
 
     #[Validate('required|numeric|min:10000', message: 'Minimum 10.000')]
     public $amount;
@@ -50,10 +50,15 @@ class Dashboard extends Component
     }
     public function render()
     {
+        $history = Transaction::query()
+            ->when($this->search, function($query){
+                $query->where('description', 'like', '%'.$this->search.'%')
+                      ->orWhere('amount', 'like', '%'.$this->search.'%');
+            })->latest()->get();
         return view('livewire.dashboard', [
             'assets' => $this->getAssets(),
             'transactions' => Transaction::count(),
-            'history' => Transaction::latest()->take(5)->get()
+            'history' => $history
         ]);
         
     }
