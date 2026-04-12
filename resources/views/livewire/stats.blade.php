@@ -11,6 +11,6 @@
     </div>
     <div class="p-8 bg-indigo-600 rounded-2xl border border-indigo-500 text-white shadow-xl shadow-indigo-200">
         <p class="text-indigo-100 text-xs font-bold uppercase tracking-widest text-opacity-70">Progress Belajar</p>
-        <p class="text-3xl font-black mt-2">Bab 9 : Component & Event</p>
+        <p class="text-3xl font-black mt-2">Bab 10 : Final Touch & Flash messages</p>
     </div>
 </div>

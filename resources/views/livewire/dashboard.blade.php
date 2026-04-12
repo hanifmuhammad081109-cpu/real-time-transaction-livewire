@@ -1,4 +1,4 @@
-<div>
+<div class="relative">
     <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-1">
         <div
             class="h-16 w-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center justify-center text-white shadow-lg shadow-indigo-200">
@@ -20,6 +20,16 @@
             wire:model.live="name" placeholder="Masukkan nama baru">
 
     </div>
+    @if (session()->has('message'))
+        <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-transition.out.opacity.duration.1000ms
+        class="fixed top-10 right-10 z-99 flex items-center p-4 m-4 text-emerald-800 rounded-2xl bg-emerald-50 border border-emerald-100 shadow-xl shadow-emerald-200/50 ">
+            ✅ <span class="w-4 h-4">{{ session('message') }}</span>
+        </div>
+    @endif
 
     {{-- Dipindahkan  --}}
     <livewire:stats

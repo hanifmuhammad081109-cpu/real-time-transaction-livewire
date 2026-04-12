@@ -31,6 +31,8 @@ class Dashboard extends Component
             'description' => 'Top Up Kostum',
         ]);
 
+        session()->flash('message', 'Top Up Berhasil!');
+
         $this->reset('amount');
 
         $this->dispatch('transaction.updated');
@@ -40,6 +42,8 @@ class Dashboard extends Component
     {
         $transaction = Transaction::findOrFail($id);
         $transaction->delete();
+
+        session()->flash('message', 'Transaksi berhasil dihapus!');
 
         $this->dispatch('transaction.updated');
 
