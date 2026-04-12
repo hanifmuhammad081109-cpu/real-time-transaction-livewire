@@ -3,23 +3,27 @@
 namespace App\Livewire;
 
 use App\Models\Transaction;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
+    
     public $name = 'Ndoro';
     public $search = "";
 
     #[Validate('required|numeric|min:10000', message: 'Minimum 10.000')]
     public $amount;
+     #[On('transaction.updated')]
+    public function refreshStats(){}
    
     public function topUp()
     {
         //Menjalankan validasi berdasarkan #[Validate]
         $this->validate();
 
-        sleep(3); //Simulasi proses yang memakan waktu
+        sleep(2); //Simulasi proses yang memakan waktu
         //Simpan ke database
         Transaction::create([
             'type' => 'masuk',
@@ -28,31 +32,17 @@ class Dashboard extends Component
         ]);
 
         $this->reset('amount');
-    }
 
-    public function minusAssets()
-    {
-        sleep(3);
-        if ($this->getAssets() >= 10000) {
-            Transaction::create([
-                'type' => 'keluar',
-                'amount' => 10000,
-                'description' => 'Penarikan Cepat',
-            ]);
-        }
-        
-    }
-    public function getAssets()
-    {
-        $masuk = Transaction::where('type', 'masuk')->sum('amount');
-        $keluar = Transaction::where('type', 'keluar')->sum('amount');
-        return $masuk - $keluar;
+        $this->dispatch('transaction.updated');
     }
 
     public function delete($id)
     {
         $transaction = Transaction::findOrFail($id);
         $transaction->delete();
+
+        $this->dispatch('transaction.updated');
+
     }
     public function render()
     {
